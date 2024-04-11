@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-    RedactingFormatter
+module
 """
 import csv
 import logging
@@ -13,30 +13,30 @@ PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 class RedactingFormatter(logging.Formatter):
-    """ Redacting Formatter class
-    """
+    """class"""
 
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
     def __init__(self, fields: List[str]):
-        """ init """
+        """init"""
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
-     def format(self, record: logging.LogRecord) -> str:
+    def format(self, record: logging.LogRecord) -> str:
         record.msg = filter_datum(self.fields, self.REDACTION, record.msg, self.SEPARATOR)
         return super().format(record)
 
 
 def filter_datum(fields, redaction, message, separator):
+    """method"""
     return re.sub(r'(?<=(' + '|'.join(fields) + r')' + re.escape(separator) + r')[^' + re.escape(separator) + r']*',
                   redaction, message)
 
 
 def get_logger() -> logging.Logger:
-    """ return a logger object """
+    """return a logger object"""
     lg = logging.getLogger("user_data")
     lg.setLevel(logging.INFO)
     lg.propagate = False
@@ -47,7 +47,7 @@ def get_logger() -> logging.Logger:
 
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
-    """ connect to MySQL database """
+    """connect to MySQL database"""
     return mysql.connector.connect(
         host=os.getenv("PERSONAL_DATA_DB_HOST", "root"),
         database=os.getenv("PERSONAL_DATA_DB_NAME"),
@@ -62,9 +62,8 @@ def main():
     """
     con = get_db()
     users = con.cursor()
-    users.execute("SELECT CONCAT('name=', name, ';ssn=', ssn, ';ip=', ip, \
-        ';user_agent', user_agent, ';') AS message FROM users;")
-    formatter = RedactingFormatter(fields=PII_FIELDS)
+    users.execute("SELECT CONCAT('name=', name, '; ssn=', ssn, '; ip=', ip, \
+        '; user_agent=', user_agent, ';') AS message FROM users;")
     logger = get_logger()
 
     for user in users:
@@ -73,3 +72,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
