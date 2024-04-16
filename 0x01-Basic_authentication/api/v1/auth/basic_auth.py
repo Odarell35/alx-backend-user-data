@@ -89,3 +89,5 @@ def current_user(self, request=None) -> TypeVar('User'):
             return self.user_object_from_credentials(credents[0], credents[1])
         except Exception:
             return None
+
+
