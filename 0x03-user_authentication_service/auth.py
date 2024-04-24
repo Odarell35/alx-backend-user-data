@@ -10,6 +10,14 @@ from typing import TypeVar
 from sqlalchemy.orm.exc import NoResultFound
 
 
+def _generate_uuid() -> str:
+    """generate uuid
+
+    Returns:
+        str: representation of a new UUID
+    """
+    return str(uuid4())
+
 def _hash_password(password: str) -> str:
     """Generate a salted hash of the input password"""
     salt = bcrypt.gensalt()
