@@ -45,7 +45,7 @@ class Auth:
         except NoResultFound:
            return self._db.add_user(email, _hash_password(password))
 
-    def valid_login(self, email: str, password: str) -> boolean:
+    def valid_login(self, email: str, password: str) -> bool:
         """
         Try locating the user by email.
         If it matches return True. 
@@ -57,3 +57,16 @@ class Auth:
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8')):
                 return True
         return False
+
+    def create_session(self, email: str) -> str:
+        """
+        create session
+        returns the session ID as a string
+        """
+        try:
+            avail_user = self._db.find_user_by(email=email)
+            session_id = _generate_uuid()
+            self._db.update_user(avail_user.id, session_id=session_id)
+        except NoResultFound:
+            return
+
