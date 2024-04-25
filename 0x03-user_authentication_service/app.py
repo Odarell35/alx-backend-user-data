@@ -9,13 +9,18 @@ AUTH = Auth()
 
 @app.route('/', methods=['GET'], strict_slashes=False)
 def index() -> str:
-    """returns message"""
+    """
+    index method
+    returns message"""
     return jsonify({"message": "Bienvenue"}), 200
 
 
 @app.route('/users', methods=['POST'], strict_slashes=False)
 def users() -> str:
-    """register user"""
+    """register user
+        Return:
+       str: message
+    """
     email = request.form.get('email')
     password = request.form.get('password')
     try:
@@ -27,7 +32,10 @@ def users() -> str:
 
 @app.route('/session', methods=['POST'], strict_slashes=False)
 def login() -> str:
-    """login"""
+    """login
+        Return:
+       str: message
+    """
     email = request.form.get('email')
     password = request.form.get('password')
     valid_login = AUTH.valid_login(email, password)
@@ -43,6 +51,8 @@ def login() -> str:
 def logout() -> None:
     """
      respond to the DELETE /sessions route
+     Return:
+       str: message
     """
     session_id = request.cookies.get('session_id')
     avail_user = AUTH.get_user_from_session_id(session_id)
@@ -56,6 +66,8 @@ def logout() -> None:
 @app.route('/profile', methods=['GET'], strict_slashes=False)
 def profile() -> str:
     """profile
+    Return:
+       str: message
     Returns a message
     """
     session_id = request.cookies.get('session_id')
@@ -70,7 +82,8 @@ def profile() -> str:
 def get_reset_password_token() -> str:
     """
     get_reset_password_token
-    returns a method
+    Return:
+       str: message
     """
     email = request.form.get('email')
     avail_user = AUTH.create_session(email)
