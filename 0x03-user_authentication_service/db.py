@@ -34,7 +34,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email:str, hashed_password:str) -> User:
+    def add_user(self, email: str, hashed_password: str) -> User:
         """Add user
             returns a User object"""
         if not email or not hashed_password:
@@ -53,16 +53,16 @@ class DB:
             raise NoResultFound
         return new_user
 
-    def update_user(self, user_id:int, **kwargs) -> None:
-        """ Update user
-        """
-        user_data = ['id', 'email', 'hashed_password', 'session_id', 'reset_token']
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """ Update user """
+        user_data = ['id', 'email', 'hashed_password',
+                     'session_id', 'reset_token']
         update_user = self.find_user_by(id=user_id)
 
-        for x,y in kwargs.items():
+        for x, y in kwargs.items():
             if x not in user_data:
                 raise ErrorValue
             setattr(update_user, x, y)
-            self._session.commit()
-        return None
 
+        self._session.commit()
+        return None
