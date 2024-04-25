@@ -47,7 +47,12 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """ Find user
-        return user"""
+        return user
+        """
+        for key in kwargs.keys():
+            if not hasattr(User, key):
+                raise InvalidRequestError()
+
         new_user = self._session.query(User).filter_by(**kwargs).first()
         if not new_user:
             raise NoResultFound
