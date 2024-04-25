@@ -7,7 +7,7 @@ from sqlalchemy.exc import InvalidRequestError
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-from sqlalchemy.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound
 
 from user import Base
 from user import User
