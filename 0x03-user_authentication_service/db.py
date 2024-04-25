@@ -65,9 +65,8 @@ class DB:
         update_user = self.find_user_by(id=user_id)
 
         for x, y in kwargs.items():
-            if x not in user_data:
-                raise ErrorValue
-            setattr(update_user, x, y)
-
+            if hasattr(User, x):
+                setattr(update_user, x, y)
+            else:
+                raise ValueError()
         self._session.commit()
-        return None
