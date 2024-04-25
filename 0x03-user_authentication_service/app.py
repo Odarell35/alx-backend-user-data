@@ -48,6 +48,17 @@ def logout() -> None:
     else:
         abort(403)
 
+@app.route('/profile', methods=['GET'], strict_slashes=False)
+def profile() -> str:
+    """profile
+    Returns a message
+    """
+    session_id = request.cookies.get('session_id')
+    avail_user = AUTH.get_user_from_session_id(session_id)
+    if avail_user:
+        return jsonify({"email": avail_user.email}), 200
+    else:
+        abort(403)
 
 
 if __name__ == "__main__":
