@@ -54,7 +54,8 @@ class Auth:
         avail_user = self._db.find_user_by(email=email)
         if avail_user:
             hashed_password = avail_user.password
-            if bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8')):
+            if bcrypt.checkpw(password.encode('utf-8'),
+                              hashed_password.encode('utf-8')):
                 return True
         return False
 
