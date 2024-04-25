@@ -18,6 +18,7 @@ def _generate_uuid() -> str:
     """
     return str(uuid4())
 
+
 def _hash_password(password: str) -> str:
     """Generate a salted hash of the input password"""
     salt = bcrypt.gensalt()
@@ -32,8 +33,7 @@ class Auth:
     def __init__(self):
         self._db = DB()
 
-
-    def register_user(self,email: str, password: str) -> User:
+    def register_user(self, email: str, password: str) -> User:
         """ method to register user
             attr: email, password
             return user object itf avail
@@ -43,12 +43,12 @@ class Auth:
             if avail_user:
                 raise ValueError(f"User {email} already exists")
         except NoResultFound:
-           return self._db.add_user(email, _hash_password(password))
+            return self._db.add_user(email, _hash_password(password))
 
     def valid_login(self, email: str, password: str) -> bool:
         """
         Try locating the user by email.
-        If it matches return True. 
+        If it matches return True.
         In any other case, return False.
         """
         avail_user = self._db.find_user_by(email=email)
@@ -113,7 +113,7 @@ class Auth:
     def update_password(self, reset_token: str, password: str) -> None:
         """
         update_password method
-        reset_token string argument 
+        reset_token string argument
         and a password string argument
         returns None
         """

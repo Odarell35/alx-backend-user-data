@@ -6,10 +6,12 @@ from flask import Flask, jsonify, request, redirect
 app = Flask(__name__)
 AUTH = Auth()
 
+
 @app.route('/', methods=['GET'], strict_slashes=False)
 def index() -> str:
     """returns message"""
     return jsonify({"message": "Bienvenue"}), 200
+
 
 @app.route('/users', methods=['POST'], strict_slashes=False)
 def users() -> str:
@@ -21,6 +23,7 @@ def users() -> str:
         return jsonify({"email": f"{email}", "message": "user created"}), 200
     except Exception:
         return jsonify({"messege": "email already registered"}), 400
+
 
 @app.route('/session', methods=['POST'], strict_slashes=False)
 def login() -> str:
@@ -35,6 +38,7 @@ def login() -> str:
     response.set_cookie('session_id', session_id)
     return response
 
+
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout() -> None:
     """
@@ -48,6 +52,7 @@ def logout() -> None:
     else:
         abort(403)
 
+
 @app.route('/profile', methods=['GET'], strict_slashes=False)
 def profile() -> str:
     """profile
@@ -59,6 +64,7 @@ def profile() -> str:
         return jsonify({"email": avail_user.email}), 200
     else:
         abort(403)
+
 
 @app.route('/reset_password', methods=['POST'], strict_slashes=False)
 def get_reset_password_token() -> str:
@@ -74,7 +80,8 @@ def get_reset_password_token() -> str:
         token = AUTH.get_reset_password_token(email)
         return jsonify({"email": f"{email}", "reset_token": f"{token}"})
 
-@app.route('/reset_password', methods=['PUT'], strict_slashes=False)\
+
+@app.route('/reset_password', methods=['PUT'], strict_slashes=False)
 def update_password() -> str:
     """
     update_password
@@ -89,7 +96,6 @@ def update_password() -> str:
                         "message": "Password updated"}), 200
     except Exception:
         abort(403)
-
 
 
 if __name__ == "__main__":
